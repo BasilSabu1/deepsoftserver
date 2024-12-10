@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Menu {
+  id          String      @id @default(cuid())  // Use a string-based identifier
+  name        String
+  description String
+  createdAt   DateTime    @default(now())
+  items       MenuItem[]  // Relation with MenuItem
+}
+
+model MenuItem {
+  id          String     @id @default(cuid())  // Use a string-based identifier
+  name        String
+  description String
+  price       Float
+  menuId      String     // Foreign key to Menu (string)
+  menu        Menu       @relation(fields: [menuId], references: [id])
+}
